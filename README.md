@@ -1,6 +1,20 @@
 # Shopping Cart Microservice Project
 
-A scalable microservice project for CRUD product and inventory management and order service.
+A scalable, event-driven microservices project for an online shopping cart system, covering product and inventory management, order processing, service discovery, and secure API access.
+
+## Features
+
+- **Product & Inventory Management** — full CRUD operations for products and stock levels, with inventory checks tied into the order flow.
+- **Order Service** — creates and manages customer orders, validating inventory availability before confirming a purchase.
+- **Service Discovery** — a Eureka server registers and discovers all microservice instances, enabling dynamic scaling without hardcoded service locations.
+- **API Gateway** — a single entry point that routes external requests to the correct downstream service, keeping internal service URLs hidden from clients.
+- **Authentication & Authorization** — secured with Spring Security and OAuth 2.0, so protected endpoints require a valid access token.
+- **Event-Driven Communication** — Kafka (backed by Zookeeper) streams real-time events between services, e.g. order-created or inventory-updated events, decoupling services from direct synchronous calls.
+- **Circuit Breaking & Fault Tolerance** — Resilience4j wraps inter-service calls so a failing downstream service degrades gracefully instead of cascading failures.
+- **Distributed Tracing** — requests are traced across services with Spring Cloud Sleuth/Brave and visualized in Zipkin, making it easier to debug latency and failures in a multi-service call chain.
+- **Monitoring & Metrics** — Prometheus scrapes service metrics and Grafana dashboards visualize system health in real time.
+- **Persistence** — Spring Data JPA with a MySQL backend for data storage, with each service managing its own schema.
+- **Containerization** — Docker support for running supporting infrastructure (Kafka, Zookeeper, MySQL, monitoring stack) consistently across environments.
 
 ## Tech Stack
 
@@ -32,7 +46,7 @@ A scalable microservice project for CRUD product and inventory management and or
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ahmadhakimi/shopping-cart-microservice.git
+   git clone <repository-url>
    ```
 2. Navigate to the project directory:
    ```bash
@@ -54,7 +68,15 @@ A scalable microservice project for CRUD product and inventory management and or
 
 ## Architecture
 
-The project follows a microservices architecture with service discovery (Eureka), centralized routing (API Gateway), distributed tracing (Zipkin), circuit breaking (Resilience4j), and event streaming (Kafka).
+The project follows a microservices architecture:
+
+- **Discovery Server (Eureka)** — central registry all services register with on startup.
+- **API Gateway** — routes and load-balances incoming requests to the appropriate service.
+- **Product/Inventory Service** — owns product catalog and stock data.
+- **Order Service** — owns order lifecycle, consulting inventory before confirming orders.
+- **Kafka/Zookeeper** — message broker enabling asynchronous, event-driven communication between services.
+- **Zipkin** — collects and visualizes distributed traces across the service call chain.
+- **Prometheus/Grafana** — collects and visualizes service-level metrics for monitoring.
 
 ## License
 
